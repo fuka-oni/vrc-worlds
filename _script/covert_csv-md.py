@@ -39,6 +39,10 @@ def csv_to_markdown(input_file, output_file):
 
             markdown += f"| {name_link} | {author_link} | {thumbnail_md} |\n"
 
+        # Add last modified message at the end
+        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        markdown += f"\n*Last modified: {now_str}*\n"
+
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(markdown)
 
@@ -52,13 +56,5 @@ input_file = input("Enter the CSV filename to import: ").strip()
 if not input_file.lower().endswith(".csv"):
     print("⚠️ The file should be a CSV.")
 else:
-    add_date = input("Do you want to add the current date as suffix to the .md filename? (y/n): ").strip().lower()
-    base_name = os.path.splitext(input_file)[0]
-
-    if add_date == "y":
-        date_str = datetime.now().strftime("%Y-%m-%d")
-        output_file = f"{base_name}_{date_str}.md"
-    else:
-        output_file = f"{base_name}.md"
-
+    output_file = os.path.splitext(input_file)[0] + ".md"
     csv_to_markdown(input_file, output_file)
